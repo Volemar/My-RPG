@@ -1,42 +1,37 @@
 using UnityEngine;
 using UnityEngine.AI;
-public class Mover : MonoBehaviour
+
+namespace RPG.Movement
 {
-    [SerializeField] Transform target;
-    NavMeshAgent agent;
-    Animator animator;
-    Vector3 velocity;
-    void Start()
+    public class Mover : MonoBehaviour
     {
-        agent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if(Input.GetMouseButton(0))
+        [SerializeField] Transform target;
+        NavMeshAgent agent;
+        Animator animator;
+        Vector3 velocity;
+        void Start()
         {
-            MoveToCursor();
+            agent = GetComponent<NavMeshAgent>();
+            animator = GetComponent<Animator>();
         }
-        UpdateAnimator();
-    }
 
-    private void MoveToCursor()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if(Physics.Raycast(ray, out hit))
+        // Update is called once per frame
+        void Update()
         {
-            agent.destination = hit.point;
+            UpdateAnimator();
         }
-    }
 
-    private void UpdateAnimator()
-    {
-        velocity = agent.velocity;
-        Vector3 localVelocity = transform.InverseTransformDirection(velocity);
-        float speed = localVelocity.z;
-        animator.SetFloat("forwardSpeed", speed);
+        private void UpdateAnimator()
+        {
+            velocity = agent.velocity;
+            Vector3 localVelocity = transform.InverseTransformDirection(velocity);
+            float speed = localVelocity.z;
+            animator.SetFloat("forwardSpeed", speed);
+        }
+
+        public void MoveTo(Vector3 destination)
+        {
+            agent.destination = destination;
+        }
     }
 }
