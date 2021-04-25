@@ -1,15 +1,16 @@
 using UnityEngine;
 using UnityEngine.AI;
+using RPG.Core;
 
 namespace RPG.Movement
 {
-    public class Mover : MonoBehaviour
+    public class Mover : MonoBehaviour, IAction
     {
         [SerializeField] Transform target;
         NavMeshAgent agent;
         Animator animator;
         Vector3 velocity;
-        void Start()
+        void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
@@ -29,9 +30,21 @@ namespace RPG.Movement
             animator.SetFloat("forwardSpeed", speed);
         }
 
+        public void MakeMoveAction(Vector3 destination)
+        {
+            GetComponent<ActionScheduler>().StartAction(this);
+            MoveTo(destination);
+        }
+
         public void MoveTo(Vector3 destination)
         {
+            agent.isStopped = false;
             agent.destination = destination;
+        }
+
+        public void Cancel()
+        {
+            agent.isStopped = true;
         }
     }
 }
