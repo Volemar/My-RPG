@@ -10,15 +10,18 @@ namespace RPG.Movement
         NavMeshAgent agent;
         Animator animator;
         Vector3 velocity;
+        Health health;
         void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
+            health = GetComponent<Health>();
         }
 
         // Update is called once per frame
         void Update()
         {
+            agent.enabled = !health.IsDead();
             UpdateAnimator();
         }
 

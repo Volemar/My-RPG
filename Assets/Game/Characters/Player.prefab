@@ -23,21 +23,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2104100332958660992, guid: 374c196514b9ab54d972109218d279d2, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 6296158745106153208, guid: 374c196514b9ab54d972109218d279d2, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6296158745106153208, guid: 374c196514b9ab54d972109218d279d2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.29601347
       objectReference: {fileID: 0}
     - target: {fileID: 6296158745106153208, guid: 374c196514b9ab54d972109218d279d2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.0000019073486
       objectReference: {fileID: 0}
     - target: {fileID: 6296158745106153208, guid: 374c196514b9ab54d972109218d279d2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.80294776
       objectReference: {fileID: 0}
     - target: {fileID: 6296158745106153208, guid: 374c196514b9ab54d972109218d279d2, type: 3}
       propertyPath: m_LocalRotation.w

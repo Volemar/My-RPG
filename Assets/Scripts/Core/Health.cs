@@ -1,16 +1,17 @@
 using UnityEngine;
 
-namespace RPG.Combat
+namespace RPG.Core
 {
     public class Health : MonoBehaviour 
     {
         [SerializeField] float health = 100f;
 
         private Animator animator;
+        private bool isDead = false;
 
         public bool IsDead()
         {
-            return health == 0;
+            return isDead;
         }
 
         private void Start() {
@@ -19,13 +20,20 @@ namespace RPG.Combat
 
         public void TakeDamage(float damage)
         {
-            if (health == 0) return;
+            if (isDead) return;
             health = Mathf.Max(health - damage, 0);
-            print(health);
             if (health == 0)
             {
-                animator.SetTrigger("die");
+                Die();
             }
+        }
+
+        private void Die()
+        {
+            if (IsDead()) return;
+            isDead = true;
+            animator.SetTrigger("die");
+            GetComponent<ActionScheduler>().CancelCurrentAction();
         }
     }
 }
