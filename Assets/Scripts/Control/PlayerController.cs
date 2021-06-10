@@ -30,12 +30,16 @@ namespace RPG.Control
             RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
             foreach (RaycastHit hit in hits)
             {
-                GameObject target = hit.transform.gameObject;
-                if (!fighter.CanAttack(target)) continue;
-
-                if (Input.GetMouseButtonDown(0))
+                CombatTarget target = hit.transform.GetComponent<CombatTarget>();
+                if (target == null)
                 {
-                    fighter.Attack(target);
+                    continue;
+                }
+                if (!fighter.CanAttack(target.gameObject)) continue;
+
+                if (Input.GetMouseButton(0))
+                {
+                    fighter.Attack(target.gameObject);
                 }
                 return true;
             }
@@ -45,11 +49,11 @@ namespace RPG.Control
         private bool InteractWithMovement()
         {
             RaycastHit hit;
-            if (Physics.Raycast(GetMouseRay(), out hit))
+            if (Physics.Raycast(GetMouseRay(), out hit))//TODO Layers to ignore player hit
             {
                 if (Input.GetMouseButton(0))
                 {
-                    mover.MakeMoveAction(hit.point);
+                    mover.MakeMoveAction(hit.point, 1f);
                 }
                 return true;
             }

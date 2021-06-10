@@ -11,7 +11,7 @@ namespace RPG.Combat
         [SerializeField] private float weaponDamage = 2f;
 
         float timeSinceLastAttack = Mathf.Infinity;
-
+        
         Health target;
         Mover mover;
         ActionScheduler action;
@@ -28,7 +28,7 @@ namespace RPG.Combat
             if(target.IsDead()) return;
             if (!GetIsInRange())
             {
-                mover.MoveTo(target.transform.position);
+                mover.MoveTo(target.transform.position, 1f);
             }
             else
             {
@@ -64,6 +64,7 @@ namespace RPG.Combat
             animator.ResetTrigger("attack");
             animator.SetTrigger("stopAttacking");
             target = null;
+            mover.Cancel();
         }
 
         //Animation event
