@@ -1,14 +1,14 @@
 using UnityEngine;
 using RPG.Movement;
 using RPG.Core;
+using System;
 
 namespace RPG.Combat
 {
     public class Fighter : MonoBehaviour, IAction
     {
-        [SerializeField] private float weaponRange = 2f;
-        [SerializeField] private float timeBetweenAttacks = 1f;
-        [SerializeField] private float weaponDamage = 2f;
+        [SerializeField] private Transform handTransform = null;
+        [SerializeField] private Weapon weapon;
 
         float timeSinceLastAttack = Mathf.Infinity;
         
@@ -20,6 +20,16 @@ namespace RPG.Combat
             mover = GetComponent<Mover>();
             animator = GetComponent<Animator>();
         }
+        private void Start() {
+            SpawnWeapon();
+        }
+
+        private void SpawnWeapon()
+        {
+            if(weapon == null) return;
+            weapon.Spawn(handTransform, animator);
+        }
+
         private void Update()
         {
             timeSinceLastAttack += Time.deltaTime;
@@ -40,7 +50,7 @@ namespace RPG.Combat
         private void AttackBehaviour()
         {
             transform.LookAt(target.transform);
-            if(timeSinceLastAttack >= timeBetweenAttacks)
+            if(timeSinceLastAttack >= weapon.TimeBetweenAttacks)
             {
                 animator.ResetTrigger("stopAttacking");
                 animator.SetTrigger("attack");
@@ -50,7 +60,7 @@ namespace RPG.Combat
 
         private bool GetIsInRange()
         {
-            return Vector3.Distance(transform.position, target.transform.position) < weaponRange;
+            return Vector3.Distance(transform.position, target.transform.position) < weapon.GetRange;
         }
 
         public void Attack(GameObject combatTarget)
@@ -71,7 +81,7 @@ namespace RPG.Combat
         private void Hit()
         {
             if (target == null) return;
-            target.TakeDamage(weaponDamage);
+            target.TakeDamage(weapon.GetDamage);
         }
 
         public bool CanAttack(GameObject combatTarget)
