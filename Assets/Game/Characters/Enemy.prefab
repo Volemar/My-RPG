@@ -102,6 +102,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: c60a00e86f397744ba922c8ee58f2810, type: 2}
     - target: {fileID: 9078782901445075054, guid: 374c196514b9ab54d972109218d279d2, type: 3}
+      propertyPath: defaultWeapon
+      value: 
+      objectReference: {fileID: 11400000, guid: c60a00e86f397744ba922c8ee58f2810, type: 2}
+    - target: {fileID: 9078782901445075054, guid: 374c196514b9ab54d972109218d279d2, type: 3}
       propertyPath: handTransform
       value: 
       objectReference: {fileID: 7556244244415150743}

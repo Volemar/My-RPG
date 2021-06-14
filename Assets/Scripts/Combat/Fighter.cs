@@ -7,10 +7,12 @@ namespace RPG.Combat
 {
     public class Fighter : MonoBehaviour, IAction
     {
-        [SerializeField] private Transform handTransform = null;
-        [SerializeField] private Weapon weapon;
+        [SerializeField] private Transform rightHandTransform = null;
+        [SerializeField] private Transform leftHandTransform = null;
+        [SerializeField] private Weapon defaultWeapon;
 
-        float timeSinceLastAttack = Mathf.Infinity;
+        private float timeSinceLastAttack = Mathf.Infinity;
+        private Weapon currentWeapon = null;
         
         Health target;
         Mover mover;
@@ -21,13 +23,13 @@ namespace RPG.Combat
             animator = GetComponent<Animator>();
         }
         private void Start() {
-            SpawnWeapon();
+            EquipWeapon(defaultWeapon);
         }
 
-        private void SpawnWeapon()
+        public void EquipWeapon(Weapon weapon)
         {
-            if(weapon == null) return;
-            weapon.Spawn(handTransform, animator);
+            currentWeapon = weapon;
+            weapon.Spawn(rightHandTransform,leftHandTransform, animator);
         }
 
         private void Update()
@@ -50,7 +52,7 @@ namespace RPG.Combat
         private void AttackBehaviour()
         {
             transform.LookAt(target.transform);
-            if(timeSinceLastAttack >= weapon.TimeBetweenAttacks)
+            if(timeSinceLastAttack >= currentWeapon.TimeBetweenAttacks)
             {
                 animator.ResetTrigger("stopAttacking");
                 animator.SetTrigger("attack");
@@ -60,7 +62,7 @@ namespace RPG.Combat
 
         private bool GetIsInRange()
         {
-            return Vector3.Distance(transform.position, target.transform.position) < weapon.GetRange;
+            return Vector3.Distance(transform.position, target.transform.position) < currentWeapon.GetRange;
         }
 
         public void Attack(GameObject combatTarget)
@@ -81,7 +83,17 @@ namespace RPG.Combat
         private void Hit()
         {
             if (target == null) return;
-            target.TakeDamage(weapon.GetDamage);
+            if (currentWeapon.HasProjectile)
+            {
+                currentWeapon.LaunchProjectile(rightHandTransform, leftHandTransform, target);
+                return;
+            }
+            target.TakeDamage(currentWeapon.GetDamage);
+        }
+
+        private void Shoot()
+        {
+            Hit();
         }
 
         public bool CanAttack(GameObject combatTarget)
