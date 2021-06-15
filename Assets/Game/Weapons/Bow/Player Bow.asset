@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16492770f809c534d99aaade18988a31, type: 3}
-  m_Name: Bow
+  m_Name: Player Bow
   m_EditorClassIdentifier: 
   animatorOverride: {fileID: 22100000, guid: d078e517349913149ac0b57b91bb1520, type: 2}
   equippedPrefab: {fileID: 6464844824068409601, guid: 791e27461c925bd40b5f31a66550edfd, type: 3}
   projectile: {fileID: 5274470365468104937, guid: d2d983296edfb4a4b90d28a10def8553, type: 3}
-  damage: 6
+  damage: 100
   range: 10
-  timeBetweenAttacks: 2
+  timeBetweenAttacks: 0.1
   isRightHanded: 0
