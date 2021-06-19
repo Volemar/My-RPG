@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using RPG.Core;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+namespace RPG.Combat
 {
+    public class Projectile : MonoBehaviour
+    {
     [SerializeField] private float speed = 1;
     [SerializeField] private bool isHoming = true;
+    [SerializeField] private GameObject impactEffect = null;
+    [SerializeField] private float lifeTime = 4f;
+    [SerializeField] private GameObject[] destroyOnHit = null;
+    [SerializeField] private float lifeAfterImpact = 2f;
     private Health target = null;
     private Vector3 targetOffset;
     private Collider targetCollider;
@@ -15,6 +21,7 @@ public class Projectile : MonoBehaviour
     private void Start() 
     {
         transform.LookAt(GenerateRandomTargetOffset());
+        Destroy(gameObject, lifeTime);
     }
 
     void Update()
@@ -56,10 +63,22 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) 
     {
-        if(other.GetComponent<Health>() != target) return;  
+        if(other.GetComponent<Health>() != target) return;
         if(target.IsDead()) return;
         target.TakeDamage(damage); 
-        Destroy(gameObject); 
+
+        speed = 0;
+
+        if (impactEffect != null)
+        {
+            Instantiate(impactEffect, transform.position, Quaternion.identity);
+        }
+        foreach (GameObject toDestroy in destroyOnHit)
+        {
+            Destroy(toDestroy);
+        }
+        Destroy(gameObject, lifeAfterImpact); 
     }
 
+}
 }
